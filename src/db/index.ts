@@ -1,16 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
 export const supabase = createClient(
-  'https://xatzqfmjznpsbzaodfvm.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhdHpxZm1qem5wc2J6YW9kZnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjA1MjczNjMsImV4cCI6MjAzNjEwMzM2M30.92JSHvGHLcVtTa7Lf1husgpkXmSTMOF31U2bfb3jLs4'
+  import.meta.env.VITE_SUPABASE_URL as string,
+  import.meta.env.VITE_SUPABASE_API_KEY as string
 )
-
-// AungKhantKoKo
-
-// public eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhdHpxZm1qem5wc2J6YW9kZnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjA1MjczNjMsImV4cCI6MjAzNjEwMzM2M30.92JSHvGHLcVtTa7Lf1husgpkXmSTMOF31U2bfb3jLs4
-
-// secret eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhdHpxZm1qem5wc2J6YW9kZnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjA1MjczNjMsImV4cCI6MjAzNjEwMzM2M30.92JSHvGHLcVtTa7Lf1husgpkXmSTMOF31U2bfb3jLs4
-
-// url https://xatzqfmjznpsbzaodfvm.supabase.co
-
-// jwt f94puhq956TLDf8uXGSNByTdTfBhs4kY7J9WVFIHorKeXdfYlqQlPKsphH9HtsrYPqcZvK9i1Ns82MT1t30lng==
