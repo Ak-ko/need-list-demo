@@ -54,20 +54,24 @@ const onSubmit = handleSubmit(async (values) => {
                            .select('id','email');
 
     if(!error) {
-        if(data[0].email === _data.email) {
-            setFieldError('email', 'User already exists.');
-            return;
+        if(!data?.length) {
+            const query = await supabase
+                              .from('users')
+                              .insert(_data)
+                              .select(`id, email`);
+
+            if(!query?.error) {
+                store.login(query?.data[0])
+                router.replace({ name: 'home' })
+            }
+        } else {
+            if(data[0].email === _data.email) {
+                setFieldError('email', 'User already exists.');
+                return;
+            }
         }
 
-        const query = await supabase
-                           .from('users')
-                           .insert(_data)
-                           .select(`id, email`);
-
-        if(!query?.error) {
-            store.login(query?.data[0])
-            router.replace({ name: 'home' })
-        }
+        
     }
 });
 
