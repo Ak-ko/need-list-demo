@@ -51,7 +51,7 @@ const onSubmit = handleSubmit(async (values) => {
 
     const { data, error } = await supabase
                            .from('users')
-                           .select('id','email');
+                           .select(`id, email`);
 
     if(!error) {
           if(data?.length && data[0].email === _data.email) {

@@ -3,6 +3,7 @@ import { supabase } from '@/db';
 import { useAuthStore } from '@/stores/authStore';
 import { useForm } from 'vee-validate';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import * as yup from 'yup';
 
 const schema = yup.object({
@@ -43,6 +44,8 @@ const [name, nameProps] = defineField('name', quasarConfig);
 const [price, priceProps] = defineField('price', quasarConfig);
 const [editName, editNameProps] = editForm.defineField('editName', quasarConfig)
 const [editPrice, editPriceProps] = editForm.defineField('editPrice', quasarConfig)
+
+const router = useRouter();
 
 const store = useAuthStore();
 const items = ref([]);
@@ -186,10 +189,30 @@ const deleteItem = async(item) => {
     }
 }
 
+const getAuthUser = async () => {
+    const query = await supabase
+            .from('users')
+            .select(`id, email`)
+            .eq('email', store?.getUser?.email);
+
+    if(query?.error){
+        console.log(query?.error);
+        return [];
+    }
+
+    return query?.data;
+}
+
 
 onMounted(async() => {
-    items.value = await getUndoneItems(store?.getUser);
-    doneItems.value = await getDoneItems(store?.getUser);
+    const authUser = await getAuthUser();
+    if(!authUser?.length) {
+        router.replace({ name: 'login' });
+        return;
+    }
+    items.value = await getUndoneItems(authUser[0]);
+    doneItems.value = await getDoneItems(authUser[0]);
+
 })
 </script>
 <template>
