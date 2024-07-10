@@ -1,8 +1,9 @@
 <script setup>
 import { supabase } from '@/db';
+import { formatPrice, today } from '@/lib/utils';
 import { useAuthStore } from '@/stores/authStore';
 import { useForm } from 'vee-validate';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import * as yup from 'yup';
 
@@ -54,6 +55,9 @@ const checkedItems = ref([]);
 const editDialog = ref(false);
 const deleteDialog= ref(false);
 const backdropFilter = ref(null);
+
+const todayTodalExpense = computed(() => doneItems.value.reduce((total, item) => total + item?.price, 0))
+const getToday = computed(today);
 
 const openEditDialog = () => {
     backdropFilter.value = "blur(4px)";
@@ -218,7 +222,8 @@ onMounted(async() => {
 </script>
 <template>
     <div class="container q-pa-lg">
-        <h1 class="text-h4 text-weight-bold">Need List</h1>
+        <p class="text-subtitle1 text-grey-9">Today Expense | {{ getToday  }}</p>
+        <h1 class="text-h4 text-weight-bold">{{ formatPrice(todayTodalExpense) }}</h1>
         <q-form @submit="onSubmit" class="row items-center q-gutter-md">
             <q-input
                 label="Name"
