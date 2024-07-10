@@ -72,38 +72,33 @@ const closeDeleteDialog = () => {
     deleteDialog.value = false;
 }
 
-const getUndoneItems = async (email) => {
+const getUndoneItems = async (user) => {
     const query = await supabase
                             .from('lists')
-                            .select(`
-                                *,
-                                user:users(email)
-                            `)
+                            .select(`*`)
                             .eq('isDone', false)
-                            .eq('user.email', email);
+                            .eq('user_id', user?.id);
     
     if(query?.error) {
         console.log(query?.error)
         return null;
     }
-    return query?.data;
+
+    return query?.data || [];
 }
 
-const getDoneItems = async (email) => {
+const getDoneItems = async (user) => {
     const query = await supabase
                             .from('lists')
-                            .select(`
-                                *,
-                                user:users(email)
-                            `)
+                            .select(`*`)
                             .eq('isDone', true)
-                            .eq('user.email', email);
+                            .eq('user_id', user?.id);
     
     if(query?.error) {
         console.log(query?.error)
         return null;
     }
-    return query?.data;
+    return query?.data || [];
 }
 
 const onSubmit = handleSubmit(async (values) => {
@@ -130,7 +125,7 @@ const addItem = async (data) => {
             .select('*');
 
     if(!query.error){
-        items.value = await getUndoneItems(store?.getUser?.email);
+        items.value = await getUndoneItems(store?.getUser);
         resetForm()
     }
 }
@@ -138,11 +133,11 @@ const addItem = async (data) => {
 const editItem = async(id, data) => {
     const query = await supabase
         .from('lists')
-        .update(data)
+        .update({...data, 'user_id': store?.getUser?.id})
         .eq('id', id);
 
     if(!query.error){
-        items.value = await getUndoneItems(store?.getUser?.email);
+        items.value = await getUndoneItems(store?.getUser);
         resetForm()
         closeEditDialog()
     }
@@ -164,8 +159,8 @@ const doneItem = async (itemIds) => {
 
     checkedItems.value = [];
 
-    items.value = await getUndoneItems(store?.getUser?.email)
-    doneItems.value = await getDoneItems(store?.getUser?.email)
+    items.value = await getUndoneItems(store?.getUser)
+    doneItems.value = await getDoneItems(store?.getUser)
 }
 
 const undoneItem = async (item) => {
@@ -174,8 +169,8 @@ const undoneItem = async (item) => {
             .update({ isDone: false })
             .eq('id', item.id)
 
-    items.value = await getUndoneItems(store?.getUser?.email)
-    doneItems.value = await getDoneItems(store?.getUser?.email)
+    items.value = await getUndoneItems(store?.getUser)
+    doneItems.value = await getDoneItems(store?.getUser)
 }
 
 const deleteItem = async(item) => {
@@ -185,18 +180,16 @@ const deleteItem = async(item) => {
             .eq('id', item.id);
 
     if(!deleteQuery.error) {
-        items.value = await getUndoneItems(store.getUser?.email);
-        doneItems.value = await getDoneItems(store.getUser?.email);
+        items.value = await getUndoneItems(store?.getUser);
+        doneItems.value = await getDoneItems(store?.getUser);
         closeDeleteDialog();
     }
 }
 
 
 onMounted(async() => {
-    const user = store.getUser;
-
-    items.value = await getUndoneItems(user?.email);
-    doneItems.value = await getDoneItems(user?.email);
+    items.value = await getUndoneItems(store?.getUser);
+    doneItems.value = await getDoneItems(store?.getUser);
 })
 </script>
 <template>
