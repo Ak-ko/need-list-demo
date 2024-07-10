@@ -13,7 +13,7 @@ interface AuthStateType {
 const storage = useLocalStorage('auth')
 
 export const useAuthStore = defineStore('auth', {
-  state: (): AuthStateType => ({ user: storage?.getItem() || { id: '', email: '' } }),
+  state: (): AuthStateType => ({ user: storage?.getItem() || null }),
   getters: {
     getUser: (state: AuthStateType) => state?.user
   },
