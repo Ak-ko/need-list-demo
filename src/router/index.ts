@@ -11,27 +11,13 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/auth/login',
+      path: '/auth/',
       component: GuestLayout,
       children: [
         {
-          path: '',
+          path: 'login',
           name: 'login',
           component: Login,
-          meta: {
-            requiresAuth: false
-          }
-        }
-      ]
-    },
-    {
-      path: '/auth/register',
-      component: GuestLayout,
-      children: [
-        {
-          path: '',
-          name: 'register',
-          component: Register,
           meta: {
             requiresAuth: false
           }

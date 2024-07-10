@@ -84,8 +84,8 @@ const onSubmit = handleSubmit(async (values) => {
 
         <q-btn class="q-mt-lg block full-width" padding="10px" size="md" color="primary" label="Submit" type="submit"  />
       </q-form>
-      <p class="q-mt-lg">
+      <!-- <p class="q-mt-lg">
         Already have an account ? <RouterLink :to="{ name: 'register' }">Register</RouterLink>
-      </p>
+      </p> -->
     </div>
 </template>
