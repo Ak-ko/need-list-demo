@@ -37,17 +37,22 @@ const onSubmit = handleSubmit(async (values) => {
                            .select(`id, email, password`)
                            .eq('email', values.email);
 
-    if(!error) {
-        const user = data[0];
-        if(user.email !== values.email) {
-            setFieldError('email', 'Invalid Credentials');
-            return;
-        }
+    if(!data?.length) {
+      setFieldError('email', 'User doesn\'t exist');
+      return;
+    }
 
-        if(!await bcrypt.compare(values.password, user.password)) {
-            setFieldError('password', 'Invalid Credentials');
-            return;
-        }
+    if(!error) {
+          const user = data[0];
+          if(user.email !== values.email) {
+              setFieldError('email', 'Invalid Credentials');
+              return;
+          }
+
+          if(!await bcrypt.compare(values.password, user.password)) {
+              setFieldError('password', 'Invalid Credentials');
+              return;
+          }
         delete user?.password;
         store.login(user)
         router.replace({ name: 'home' })

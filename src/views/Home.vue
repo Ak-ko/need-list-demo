@@ -126,7 +126,7 @@ const onEdit = editForm.handleSubmit(async (values) => {
 const addItem = async (data) => {
     const query = await supabase
             .from('lists')
-            .insert(data)
+            .insert({...data, 'user_id': store?.getUser?.id})
             .select('*');
 
     if(!query.error){
