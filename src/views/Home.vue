@@ -207,6 +207,7 @@ const getAuthUser = async () => {
 onMounted(async() => {
     const authUser = await getAuthUser();
     if(!authUser?.length) {
+        store?.logout();
         router.replace({ name: 'login' });
         return;
     }
